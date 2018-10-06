@@ -19,9 +19,9 @@ export function assert(
 	}
 }
 
-export function assertEquals<T>(
-	actual: T,
-	expected: T,
+export function assertEquals(
+	actual: any,
+	expected: any,
 	message: string = "Actual value does not equal expected value",
 ) {
 	if (actual !== expected && !objectEquals(actual, expected)) {
@@ -29,9 +29,9 @@ export function assertEquals<T>(
 	}
 }
 
-export function assertReferenceEquals<T>(
-	actual: T,
-	expected: T,
+export function assertReferenceEquals(
+	actual: any,
+	expected: any,
 	message: string = "Actual value does not equal expected value",
 ) {
 	if (actual !== expected) {
