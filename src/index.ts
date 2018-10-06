@@ -24,7 +24,7 @@ export function assertEquals(
 	expected: any,
 	message: string = "Actual value does not equal expected value",
 ) {
-	if (actual !== expected && !objectEquals(actual, expected)) {
+	if (!deepEquals(actual, expected)) {
 		throw new AssertEqualsError(actual, expected, message);
 	}
 }
@@ -39,6 +39,12 @@ export function assertReferenceEquals(
 	}
 }
 
+function deepEquals(a: any, b: any) {
+	return a === b || objectEquals(a, b);
+}
+
+// TODO: What happens with internal data, like in Sets or Maps?
+// TODO: Handle circular references.
 function objectEquals(a: any, b: any) {
 	if (
 		typeof a !== 'object' ||
@@ -48,17 +54,15 @@ function objectEquals(a: any, b: any) {
 		return false;
 	}
 
-	// TODO: What happens if you pass two Sets or Maps to this function?
-
 	for (const key of Object.keys(a)) {
-		if (a[key] !== b[key]) {
+		if (!deepEquals(a[key], b[key])) {
 			return false;
 		}
 	}
 
 	// TODO: Optimize this to not do everything twice
 	for (const key of Object.keys(b)) {
-		if (b[key] !== a[key]) {
+		if (!deepEquals(b[key], a[key])) {
 			return false;
 		}
 	}
